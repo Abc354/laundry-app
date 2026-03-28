@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/"
+title = "Laundromat Manager"
+version = "1.0.0"
+id = "artifacts/laundromat"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 21037
+
+[services.development]
+run = "pnpm --filter @workspace/laundromat run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/laundromat", "run", "build" ]
+publicDir = "artifacts/laundromat/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "21037"
+BASE_PATH = "/"
