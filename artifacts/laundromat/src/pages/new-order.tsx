@@ -1,9 +1,10 @@
+import { supabase } from "@/lib/supabase";
 import { useState, useMemo, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Plus, Minus, Search, ShoppingBag, User, Phone, Calendar, Trash2, CheckCircle2, Tag, Camera, X, ImageIcon } from "lucide-react";
 import { CATALOG, CATEGORIES, type CatalogItem } from "@/lib/catalog";
 import { formatCurrency, cn } from "@/lib/utils";
-import { useCreateOrder } from "@/hooks/use-orders";
+
 import { useToast } from "@/hooks/use-toast";
 import { Layout } from "@/components/Layout";
 
@@ -18,7 +19,7 @@ type CartItem = {
 
 export default function NewOrder() {
   const { toast } = useToast();
-  const createOrderMutation = useCreateOrder();
+  
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [activeCategory, setActiveCategory] = useState<string>(CATEGORIES[0]);
@@ -124,108 +125,97 @@ export default function NewOrder() {
     });
   };
 
-  const uploadPhotos = async (): Promise<string[]> => {
-    if (photos.length === 0) return [];
-    const formData = new FormData();
-    photos.forEach(f => formData.append("photos", f));
-    const res = await fetch("/api/upload", { method: "POST", body: formData });
-    if (!res.ok) throw new Error("Failed to upload photos");
-    const data = await res.json();
-    return data.urls as string[];
-  };
+
 
   const handleSubmit = async () => {
-    if (!customerName || !whatsappNumber) {
-      toast({
-        title: "Missing Information",
-        description: "Please provide customer name and WhatsApp number.",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    if (cart.length === 0) {
-      toast({
-        title: "Empty Order",
-        description: "Please add at least one item to the order.",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    setIsUploading(true);
-    let uploadedPhotoUrls: string[] = [];
-    try {
-      uploadedPhotoUrls = await uploadPhotos();
-    } catch {
-      toast({
-        title: "Photo Upload Failed",
-        description: "Could not upload photos. Please try again.",
-        variant: "destructive",
-      });
-      setIsUploading(false);
-      return;
-    }
-    setIsUploading(false);
-
-    createOrderMutation.mutate({
-      data: {
-        customerName,
-        whatsappNumber,
-        orderDate,
-        estimatedReadyDate: estimatedReadyDate || undefined,
-        notes,
-        totalAmount,
-        discountAmount: discount > 0 ? discount : undefined,
-        items: cart.map(c => ({
-          name: c.name,
-          quantity: c.quantity,
-          unitPrice: c.unitPrice,
-          totalPrice: c.unitPrice * c.quantity,
-          category: c.category
-        })),
-        photoUrls: uploadedPhotoUrls.length > 0 ? uploadedPhotoUrls : undefined,
-      }
-    }, {
-      onSuccess: (order) => {
-        toast({
-          title: "Order Created!",
-          description: `Order for ${customerName} has been saved. Opening WhatsApp...`,
-        });
-        const phone = whatsappNumber.replace(/\D/g, "");
-        const itemsList = cart.map(c => `  - ${c.quantity}x ${c.name}: ₹${c.unitPrice * c.quantity}`).join("\n");
-        const readyDateLine = estimatedReadyDate
-          ? `\nEstimated Ready Date: ${new Date(estimatedReadyDate).toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric" })}`
-          : "";
-        const discountLine = discount > 0
-          ? `\nDiscount Applied: -₹${discount}\nGrand Total: ₹${totalAmount}`
-          : `\nTotal Amount: ₹${subtotal}`;
-        const photosLine = uploadedPhotoUrls.length > 0
-          ? `\n\nPhotos of your items:\n${uploadedPhotoUrls.join("\n")}`
-          : "";
-        const msg = `Hello ${customerName},\n\nYour laundry order has been placed successfully at SW Laundry and Dry Cleaners.\n\nOrder #${order.id}\nItems:\n${itemsList}${discountLine}${readyDateLine}${photosLine}\n\nThank you for choosing us! We will notify you when your order is ready.`;
-        window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`, "_blank");
-        setCart([]);
-        setCustomerName("");
-        setWhatsappNumber("");
-        setNotes("");
-        setEstimatedReadyDate("");
-        setOrderDate(new Date().toISOString().split("T")[0]);
-        setDiscountAmount("");
-        setPhotos([]);
-        setPhotoPreviewUrls([]);
-      },
-      onError: (err) => {
-        toast({
-          title: "Error creating order",
-          description: err.message || "An unexpected error occurred.",
-          variant: "destructive",
-        });
-      }
+  if (!customerName || !whatsappNumber) {
+    toast({
+      title: "Missing Information",
+      description: "Please provide customer name and WhatsApp number.",
+      variant: "destructive",
     });
-  };
+    return;
+  }
 
-  const isSubmitting = createOrderMutation.isPending || isUploading;
+  if (cart.length === 0) {
+    toast({
+      title: "Empty Order",
+      description: "Please add at least one item to the order.",
+      variant: "destructive",
+    });
+    return;
+  }
+
+  try {
+    setIsUploading(true);
+
+    let imageUrls: string[] = [];
+
+    // Upload images
+    for (const file of photos) {
+      const fileName = `${Date.now()}-${file.name}`;
+
+      const { error: uploadError } = await supabase.storage
+        .from("orders")
+        .upload(fileName, file);
+
+      if (uploadError) throw uploadError;
+
+      const { data } = supabase.storage
+        .from("orders")
+        .getPublicUrl(fileName);
+
+      imageUrls.push(data.publicUrl);
+    }
+
+    // Insert into DB
+    const { error } = await supabase.from("orders").insert([
+      {
+        customer_name: customerName,
+        whatsapp_number: whatsappNumber,
+        order_date: orderDate,
+        estimated_ready_date: estimatedReadyDate || null,
+        items: cart,
+        total_amount: totalAmount,
+        discount_amount: discount > 0 ? discount : null,
+        notes,
+        photo_urls: imageUrls,
+      },
+    ]);
+
+    if (error) throw error;
+
+    toast({
+      title: "Order Created!",
+      description: "Order saved successfully.",
+    });
+
+    const phone = whatsappNumber.replace(/\D/g, "");
+    const msg = `Hello ${customerName}, your laundry order is placed. Total: ₹${totalAmount}`;
+    window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`, "_blank");
+
+    // Reset
+    setCart([]);
+    setCustomerName("");
+    setWhatsappNumber("");
+    setNotes("");
+    setEstimatedReadyDate("");
+    setDiscountAmount("");
+    setPhotos([]);
+    setPhotoPreviewUrls([]);
+
+  } catch (err: any) {
+    console.error(err);
+    toast({
+      title: "Error",
+      description: err.message || "Something went wrong",
+      variant: "destructive",
+    });
+  } finally {
+    setIsUploading(false);
+  }
+};
+ const isSubmitting = isUploading;
 
   return (
     <Layout>
