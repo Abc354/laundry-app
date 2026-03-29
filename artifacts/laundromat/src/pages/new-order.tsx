@@ -201,17 +201,26 @@ export default function NewOrder() {
     const itemsList = cart
       .map(c => `- ${c.quantity}x ${c.name} – ₹${c.unitPrice * c.quantity}`)
       .join("\n");
+      const orderId = data.id.slice(0, 6).toUpperCase();
+
+const formattedDate = estimatedReadyDate
+  ? new Date(estimatedReadyDate).toLocaleDateString("en-IN", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    })
+  : "Not specified";
 
     const msg = `Hello ${customerName},
 
 Your laundry order has been placed successfully at *SW Laundry & Dry Cleaners*.
 
-🧾 Order ID: #${data.id}
-👕 Items:
+Order ID: #${orderId}
+Items:
 ${itemsList}
 
-💰 Total Amount: ₹${totalAmount}
-📅 Estimated Ready Date: ${estimatedReadyDate || "Not specified"}
+Total Amount: ₹${totalAmount}
+Estimated Ready Date: ${formattedDate}
 
 Thank you for choosing us! We will notify you once your order is ready.`;
 
