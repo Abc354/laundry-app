@@ -146,49 +146,48 @@ export default function NewOrder() {
     return;
   }
 
- 
-
+  try {
     // Upload images
     let imageUrls: string[] = [];
 
-if (photos.length > 0) {
-  setIsUploading(true);
+    if (photos.length > 0) {
+      setIsUploading(true);
 
-  for (const file of photos) {
-    const fileName = `${Date.now()}-${file.name}`;
+      for (const file of photos) {
+        const fileName = `${Date.now()}-${file.name}`;
 
-    const { error: uploadError } = await supabase.storage
-      .from("orders")
-      .upload(fileName, file);
+        const { error: uploadError } = await supabase.storage
+          .from("orders")
+          .upload(fileName, file);
 
-    if (uploadError) throw uploadError;
+        if (uploadError) throw uploadError;
 
-    const { data } = supabase.storage
-      .from("orders")
-      .getPublicUrl(fileName);
+        const { data } = supabase.storage
+          .from("orders")
+          .getPublicUrl(fileName);
 
-    imageUrls.push(data.publicUrl);
-  }
-}
+        imageUrls.push(data.publicUrl);
+      }
+    }
 
     // Insert into DB
     const { data, error } = await supabase
-  .from("orders")
-  .insert([
-      {
-        customer_name: customerName,
-        whatsapp_number: whatsappNumber,
-        order_date: orderDate,
-        estimated_ready_date: estimatedReadyDate || null,
-        items: cart,
-        total_amount: totalAmount,
-        discount_amount: discount > 0 ? discount : null,
-        notes,
-        photo_urls: imageUrls,
-      },
-    ])
-    .select()
-    .single();
+      .from("orders")
+      .insert([
+        {
+          customer_name: customerName,
+          whatsapp_number: whatsappNumber,
+          order_date: orderDate,
+          estimated_ready_date: estimatedReadyDate || null,
+          items: cart,
+          total_amount: totalAmount,
+          discount_amount: discount > 0 ? discount : null,
+          notes,
+          photo_urls: imageUrls,
+        },
+      ])
+      .select()
+      .single();
 
     if (error) throw error;
 
@@ -197,13 +196,13 @@ if (photos.length > 0) {
       description: "Order saved successfully.",
     });
 
-const phone = whatsappNumber.replace(/\D/g, "");
+    const phone = whatsappNumber.replace(/\D/g, "");
 
-const itemsList = cart
-  .map(c => `- ${c.quantity}x ${c.name} – ₹${c.unitPrice * c.quantity}`)
-  .join("\n");
+    const itemsList = cart
+      .map(c => `- ${c.quantity}x ${c.name} – ₹${c.unitPrice * c.quantity}`)
+      .join("\n");
 
-const msg = `Hello ${customerName},
+    const msg = `Hello ${customerName},
 
 Your laundry order has been placed successfully at *SW Laundry & Dry Cleaners*.
 
@@ -216,7 +215,7 @@ ${itemsList}
 
 Thank you for choosing us! We will notify you once your order is ready.`;
 
-window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`, "_blank");
+    window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`, "_blank");
     // Reset
     setCart([]);
     setCustomerName("");
@@ -227,6 +226,7 @@ window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`, "_blank");
     setPhotos([]);
     setPhotoPreviewUrls([]);
 
+    setIsUploading(false);
   } catch (err: any) {
     console.error(err);
     toast({
