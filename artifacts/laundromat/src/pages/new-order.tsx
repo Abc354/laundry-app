@@ -172,7 +172,7 @@ export default function NewOrder() {
 
     // Insert into DB
     const { data, error } = await supabase
-      .from("ORDERS")
+      .from("orders")
       .insert([
         {
           customer_name: customerName,
