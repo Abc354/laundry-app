@@ -146,30 +146,35 @@ export default function NewOrder() {
     return;
   }
 
-  try {
-    setIsUploading(true);
-
-    let imageUrls: string[] = [];
+ 
 
     // Upload images
-    for (const file of photos) {
-      const fileName = `${Date.now()}-${file.name}`;
+    let imageUrls: string[] = [];
 
-      const { error: uploadError } = await supabase.storage
-        .from("orders")
-        .upload(fileName, file);
+if (photos.length > 0) {
+  setIsUploading(true);
 
-      if (uploadError) throw uploadError;
+  for (const file of photos) {
+    const fileName = `${Date.now()}-${file.name}`;
 
-      const { data } = supabase.storage
-        .from("orders")
-        .getPublicUrl(fileName);
+    const { error: uploadError } = await supabase.storage
+      .from("orders")
+      .upload(fileName, file);
 
-      imageUrls.push(data.publicUrl);
-    }
+    if (uploadError) throw uploadError;
+
+    const { data } = supabase.storage
+      .from("orders")
+      .getPublicUrl(fileName);
+
+    imageUrls.push(data.publicUrl);
+  }
+}
 
     // Insert into DB
-    const { error } = await supabase.from("orders").insert([
+    const { data, error } = await supabase
+  .from("orders")
+  .insert([
       {
         customer_name: customerName,
         whatsapp_number: whatsappNumber,
@@ -181,7 +186,9 @@ export default function NewOrder() {
         notes,
         photo_urls: imageUrls,
       },
-    ]);
+    ])
+    .select()
+    .single();
 
     if (error) throw error;
 
@@ -190,10 +197,26 @@ export default function NewOrder() {
       description: "Order saved successfully.",
     });
 
-    const phone = whatsappNumber.replace(/\D/g, "");
-    const msg = `Hello ${customerName}, your laundry order is placed. Total: ₹${totalAmount}`;
-    window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`, "_blank");
+const phone = whatsappNumber.replace(/\D/g, "");
 
+const itemsList = cart
+  .map(c => `- ${c.quantity}x ${c.name} – ₹${c.unitPrice * c.quantity}`)
+  .join("\n");
+
+const msg = `Hello ${customerName},
+
+Your laundry order has been placed successfully at *SW Laundry & Dry Cleaners*.
+
+🧾 Order ID: #${data.id}
+👕 Items:
+${itemsList}
+
+💰 Total Amount: ₹${totalAmount}
+📅 Estimated Ready Date: ${estimatedReadyDate || "Not specified"}
+
+Thank you for choosing us! We will notify you once your order is ready.`;
+
+window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`, "_blank");
     // Reset
     setCart([]);
     setCustomerName("");
@@ -521,7 +544,7 @@ export default function NewOrder() {
                 className="w-full py-3.5 px-4 bg-gradient-to-r from-primary to-primary/80 hover:to-primary text-white rounded-xl font-bold text-lg shadow-lg shadow-primary/25 hover:shadow-primary/40 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center gap-2"
               >
                 {isSubmitting ? (
-                  <span className="animate-pulse">{isUploading ? "Uploading Photos..." : "Processing..."}</span>
+                  <span className="animate-pulse">{photos.length>0 ? "Uploading Photos..." : "Processing..."}</span>
                 ) : (
                   <>
                     <CheckCircle2 className="w-5 h-5" /> Submit Order
