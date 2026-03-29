@@ -5,7 +5,7 @@ import {
   useUpdateOrder as useGeneratedUpdateOrder,
   useDeleteOrder as useGeneratedDeleteOrder,
   getListOrdersQueryKey,
-} from "@workspace/api-client-react";
+} from "../../../lib/api-client-react/src";
 
 export function useOrders() {
   return useListOrders();
