@@ -17,7 +17,7 @@ import { Layout } from "@/components/Layout";
 import { useOrders, useUpdateOrder, useDeleteOrder } from "@/hooks/use-orders";
 import { formatCurrency, cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
-import type { OrderStatus } from "../lib/api-client-react";
+import type { OrderStatus } from "../lib/api-client-react/src";
 
 export default function OrdersList() {
   const { data: orders, isLoading, error } = useOrders();
