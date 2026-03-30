@@ -21,6 +21,9 @@ import { useToast } from "@/hooks/use-toast";
 
 export default function OrdersList() {
   const { data: orders, isLoading, error } = useOrders();
+  console.log("ORDERS RAW:", orders);
+console.log("LOADING:", isLoading);
+console.log("ERROR:", error);
   const updateOrder = useUpdateOrder();
   const deleteOrder = useDeleteOrder();
   const { toast } = useToast();
