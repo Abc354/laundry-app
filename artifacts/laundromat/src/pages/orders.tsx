@@ -36,6 +36,7 @@ console.log("ERROR:", error);
   const [expandedPhotos, setExpandedPhotos] = useState<number | null>(null);
 const safeOrders = orders || [];
   const filteredOrders = useMemo(() => {
+    console.log("INSIDE FILTER, orders:", orders);
     return safeOrders?.filter((order) => {
       const matchesFilter = filter === "all" || order.status === filter;
       const searchLower = search.toLowerCase();
@@ -241,14 +242,18 @@ const safeOrders = orders || [];
                   <div className="flex justify-between items-center text-sm mb-2">
                     <span className="text-muted-foreground">Order Date</span>
                     <span className="font-medium text-foreground">
-                      {format(new Date(order.orderDate), "MMM d, yyyy")}
+                      {order.orderDate
+  ? format(new Date(order.orderDate), "MMM d, yyyy")
+  : "-"}
                     </span>
                   </div>
                   {order.estimatedReadyDate && (
                     <div className="flex justify-between items-center text-sm mb-4">
                       <span className="text-muted-foreground">Est. Ready By</span>
                       <span className="font-semibold text-primary">
-                        {format(new Date(order.estimatedReadyDate), "MMM d, yyyy")}
+                        {order.estimatedReadyDate
+  ? format(new Date(order.estimatedReadyDate), "MMM d, yyyy")
+  : "-"}
                       </span>
                     </div>
                   )}
