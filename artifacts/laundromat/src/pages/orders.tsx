@@ -36,13 +36,13 @@ export default function OrdersList() {
       const matchesFilter = filter === "all" || order.status === filter;
       const searchLower = search.toLowerCase();
       const matchesSearch =
-        order.customerName.toLowerCase().includes(searchLower) ||
-        order.whatsappNumber.includes(searchLower) ||
-        order.id.toString().includes(searchLower);
+  (order.customerName || "").toLowerCase().includes(searchLower) ||
+  (order.whatsappNumber || "").includes(searchLower) ||
+  String(order.id || "").includes(searchLower);
 
       let matchesDate = true;
       if (dateFrom || dateTo) {
-        const orderCreated = new Date(order.createdAt).toISOString().split("T")[0];
+        const orderCreated = order.createdAt ? new Date(order.createdAt) : new Date().toISOString().split("T")[0];
         if (dateFrom && orderCreated < dateFrom) matchesDate = false;
         if (dateTo && orderCreated > dateTo) matchesDate = false;
       }
@@ -247,9 +247,9 @@ export default function OrdersList() {
                   )}
 
                   <div className="mb-4">
-                    <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider block mb-2">Items Summary ({order.items.reduce((acc, i) => acc + i.quantity, 0)})</span>
+                    <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider block mb-2">Items Summary ({(order.items || []).reduce((acc, i) => acc + (i.quantity || 0), 0)})</span>
                     <ul className="text-sm space-y-1 text-foreground/80 max-h-24 overflow-y-auto pr-2 custom-scrollbar">
-                      {order.items.map((item, idx) => (
+                      {(order.items || []).map((item, idx) => (
                         <li key={idx} className="flex justify-between">
                           <span className="truncate pr-4">{item.quantity}x {item.name}</span>
                           <span className="font-medium">₹{item.totalPrice}</span>
