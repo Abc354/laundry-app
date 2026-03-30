@@ -157,13 +157,13 @@ export default function NewOrder() {
         const fileName = `${Date.now()}-${file.name}`;
 
         const { error: uploadError } = await supabase.storage
-          .from("orders")
+          .from("Orders")
           .upload(fileName, file);
 
         if (uploadError) throw uploadError;
 
         const { data } = supabase.storage
-          .from("orders")
+          .from("Orders")
           .getPublicUrl(fileName);
 
         imageUrls.push(data.publicUrl);
