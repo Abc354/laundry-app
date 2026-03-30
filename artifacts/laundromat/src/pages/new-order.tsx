@@ -211,6 +211,10 @@ const formattedDate = estimatedReadyDate
     })
   : "Not specified";
 
+  const photosLine = imageUrls.length > 0
+  ? `\n Photos:\n${imageUrls.map((url, i) => `${i+1}. ${url}`).join("\n")}`
+  : "";
+
     const msg = `Hello ${customerName},
 
 Your laundry order has been placed successfully at *SW Laundry & Dry Cleaners*.
@@ -220,7 +224,7 @@ Items:
 ${itemsList}
 
 Total Amount: ₹${totalAmount}
-Estimated Ready Date: ${formattedDate}
+Estimated Ready Date: ${formattedDate}${photosLine}
 
 Thank you for choosing us! We will notify you once your order is ready.`;
 
