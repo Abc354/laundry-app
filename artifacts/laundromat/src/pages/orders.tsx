@@ -17,7 +17,7 @@ import { Layout } from "@/components/Layout";
 import { useOrders, useUpdateOrder, useDeleteOrder } from "@/hooks/use-orders";
 import { formatCurrency, cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
-import type { OrderStatus } from "../lib/api-client-react/src";
+//import type { OrderStatus } from "../lib/api-client-react/src";
 
 export default function OrdersList() {
   const { data: orders, isLoading, error } = useOrders();
@@ -25,14 +25,15 @@ export default function OrdersList() {
   const deleteOrder = useDeleteOrder();
   const { toast } = useToast();
 
-  const [filter, setFilter] = useState<OrderStatus | "all">("all");
+ // const [filter, setFilter] = useState<OrderStatus | "all">("all");
+ const [filter, setFilter] = useState<"all" | "pending" | "ready" | "delivered">("all");
   const [search, setSearch] = useState("");
   const [dateFrom, setDateFrom] = useState("");
   const [dateTo, setDateTo] = useState("");
   const [expandedPhotos, setExpandedPhotos] = useState<number | null>(null);
-
+const safeOrders = orders || [];
   const filteredOrders = useMemo(() => {
-    return orders?.filter((order) => {
+    return safeOrders?.filter((order) => {
       const matchesFilter = filter === "all" || order.status === filter;
       const searchLower = search.toLowerCase();
       const matchesSearch =
@@ -42,7 +43,10 @@ export default function OrdersList() {
 
       let matchesDate = true;
       if (dateFrom || dateTo) {
-        const orderCreated = order.createdAt ? new Date(order.createdAt) : new Date().toISOString().split("T")[0];
+      //  const orderCreated = order.createdAt ? new Date(order.createdAt) : new Date().toISOString().split("T")[0];
+      const orderCreated = order.createdAt
+  ? new Date(order.createdAt).toISOString().split("T")[0]
+  : "";
         if (dateFrom && orderCreated < dateFrom) matchesDate = false;
         if (dateTo && orderCreated > dateTo) matchesDate = false;
       }
