@@ -40,10 +40,13 @@ const safeOrders = orders || [];
     return safeOrders?.filter((order) => {
       const matchesFilter = filter === "all" || order.status === filter;
       const searchLower = search.toLowerCase();
-      const matchesSearch =
+      const displayId = String(order.order_number || 0).padStart(3, "0");
+
+const matchesSearch =
   (order.customerName || "").toLowerCase().includes(searchLower) ||
   (order.whatsappNumber || "").includes(searchLower) ||
-  String(order.id || "").includes(searchLower);
+  displayId.includes(searchLower.replace("#", "")) ||
+  String(order.order_number || "").includes(searchLower);
 
       let matchesDate = true;
       if (dateFrom || dateTo) {
@@ -129,7 +132,7 @@ Please visit us to collect your clothes. Thank you for choosing us!`;
             <Search className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
             <input
               type="text"
-              placeholder="Search ID, Name or Phone..."
+              placeholder="Search Order No, Name or Phone..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               className="w-full md:w-64 pl-10 pr-4 py-2.5 bg-white border border-border rounded-xl focus:outline-none focus:ring-4 focus:ring-primary/10 focus:border-primary transition-all shadow-sm"
