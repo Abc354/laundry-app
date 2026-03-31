@@ -83,7 +83,15 @@ const safeOrders = orders || [];
 
   const openWhatsApp = (order: NonNullable<typeof orders>[number]) => {
     const phone = order.whatsappNumber.replace(/\D/g, "");
-    const msg = `Hello ${order.customerName},\n\nGreat news! Your laundry order (#${order.id}) at SW Laundry and Dry Cleaners is ready for pickup.\n\nTotal Amount: Rs.${order.totalAmount}\n\nPlease visit us to collect your clothes. Thank you for choosing us!`;
+    const displayId = String(order.order_number || 0).padStart(3, "0");
+
+const msg = `Hello ${order.customerName},
+
+Great news! Your laundry order (#${displayId}) at *SW Laundry & Dry Cleaners* is ready for pickup.
+
+Total Amount: ₹${order.totalAmount}
+
+Please visit us to collect your clothes. Thank you for choosing us!`;
     const url = `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
     window.open(url, "_blank");
   };
@@ -215,7 +223,9 @@ const safeOrders = orders || [];
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
           <AnimatePresence>
-            {filteredOrders?.map((order, i) => (
+            {filteredOrders?.map((order, i) => {
+  const displayId = String(order.order_number || 0).padStart(3, "0");
+  return (
               <motion.div
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
@@ -227,7 +237,7 @@ const safeOrders = orders || [];
                 <div className="p-5 border-b border-border/50 flex justify-between items-start bg-secondary/30">
                   <div>
                     <span className="text-xs font-bold text-muted-foreground uppercase tracking-widest block mb-1">
-                      Order #{order.id}
+                      Order #{displayId}
                     </span>
                     <h3 className="font-bold text-lg text-foreground">{order.customerName}</h3>
                     <p className="text-sm text-muted-foreground">{order.whatsappNumber}</p>
@@ -338,7 +348,17 @@ const safeOrders = orders || [];
                           onClick={() => {
                             handleUpdateStatus(order.id, "delivered");
                             const phone = order.whatsappNumber.replace(/\D/g, "");
-                            const msg = `Hello ${order.customerName},\n\nThank you for visiting SW Laundry and Dry Cleaners! Your laundry order (#${order.id}) has been successfully delivered.\n\nTotal: Rs.${order.totalAmount}\n\nWe hope to see you again soon!`;
+                           const displayId = String(order.order_number || 0).padStart(3, "0");
+
+const msg = `Hello ${order.customerName},
+
+Thank you for visiting *SW Laundry & Dry Cleaners*!
+
+Your laundry order (#${displayId}) has been successfully delivered.
+
+Total Amount: ₹${order.totalAmount}
+
+We hope to see you again soon!`;
                             window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`, "_blank");
                           }}
                           disabled={updateOrder.isPending}
@@ -369,7 +389,8 @@ const safeOrders = orders || [];
                   </div>
                 </div>
               </motion.div>
-            ))}
+);
+})}
           </AnimatePresence>
         </div>
       )}

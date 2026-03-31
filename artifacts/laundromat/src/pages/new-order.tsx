@@ -201,7 +201,8 @@ export default function NewOrder() {
     const itemsList = cart
       .map(c => `- ${c.quantity}x ${c.name} – ₹${c.unitPrice * c.quantity}`)
       .join("\n");
-      const orderId = data.id.slice(0, 6).toUpperCase();
+     // const orderId = data.id.slice(0, 6).toUpperCase();
+     const displayId =String(data.order_number).padStart(3,"0");
 
 const formattedDate = estimatedReadyDate
   ? new Date(estimatedReadyDate).toLocaleDateString("en-IN", {
@@ -219,7 +220,7 @@ const formattedDate = estimatedReadyDate
 
 Your laundry order has been placed successfully at *SW Laundry & Dry Cleaners*.
 
-Order ID: #${orderId}
+Order ID: #${displayId}
 Items:
 ${itemsList}
 
