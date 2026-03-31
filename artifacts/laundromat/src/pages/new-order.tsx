@@ -401,6 +401,56 @@ Thank you for choosing us! We will notify you once your order is ready.`;
             </div>
 
             <div className="flex-1 overflow-y-auto p-6 bg-secondary/10">
+
+<div className="bg-white border border-border rounded-2xl p-4 mb-4">
+  <h4 className="font-semibold text-sm mb-3">Add Custom Item</h4>
+
+  <div className="flex gap-2">
+    <input
+      type="text"
+      placeholder="Item name"
+      value={customItemName}
+      onChange={(e) => setCustomItemName(e.target.value)}
+      className="flex-1 px-3 py-2 border border-border rounded-lg text-sm"
+    />
+
+    <input
+      type="number"
+      placeholder="₹"
+      value={customItemPrice}
+      onChange={(e) => setCustomItemPrice(Number(e.target.value))}
+      disabled={!customItemName}
+      className="w-24 px-3 py-2 border border-border rounded-lg text-sm disabled:opacity-50"
+    />
+
+    <button
+      onClick={() => {
+        if (!customItemName || !customItemPrice) return;
+
+        setCart(prev => [
+          ...prev,
+          {
+            id: Math.random().toString(36),
+            name: customItemName,
+            category: "Custom",
+            unitPrice: Number(customItemPrice),
+            quantity: 1,
+            isCustomPrice: true,
+          },
+        ]);
+
+        setCustomItemName("");
+        setCustomItemPrice("");
+      }}
+      className="px-3 py-2 bg-primary text-white rounded-lg text-sm"
+    >
+      Add
+    </button>
+  </div>
+</div>
+
+
+
               <h3 className="font-display font-bold text-lg mb-4 flex items-center gap-2">
                 <ShoppingBag className="w-5 h-5 text-primary" /> Current Order
               </h3>
