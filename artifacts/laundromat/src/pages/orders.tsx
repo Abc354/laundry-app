@@ -52,7 +52,7 @@ const matchesSearch =
       if (dateFrom || dateTo) {
       //  const orderCreated = order.createdAt ? new Date(order.createdAt) : new Date().toISOString().split("T")[0];
       const orderCreated = order.createdAt
-  ? new Date(order.createdAt).toISOString().split("T")[0]
+  ? new Date(order.createdAt).toLocaleDateString("en-CA")
   : "";
         if (dateFrom && orderCreated < dateFrom) matchesDate = false;
         if (dateTo && orderCreated > dateTo) matchesDate = false;
