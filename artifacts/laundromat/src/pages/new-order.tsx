@@ -401,7 +401,7 @@ Thank you for choosing us! We will notify you once your order is ready.`;
               </div>
             </div>
 
-            <div className="flex-1 overflow-y-auto p-6 bg-secondary/10">
+          <div className="flex-1 min-h-[300px] max-h-[500px] overflow-y-auto p-6 bg-secondary/10">
 
 <div className="bg-white border border-border rounded-2xl p-4 mb-4">
   <h4 className="font-semibold text-sm mb-3">Add Custom Item</h4>
