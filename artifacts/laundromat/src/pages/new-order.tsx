@@ -262,7 +262,7 @@ Thank you for choosing us! We will notify you once your order is ready.`;
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
 
         {/* Left Column: Catalog */}
-        <div className="lg:col-span-7 xl:col-span-8 flex flex-col h-[calc(100vh-6rem)]">
+        <div className="lg:col-span-7 xl:col-span-8 flex flex-col">
           <div className="mb-6">
             <h2 className="text-3xl font-display font-bold text-foreground">Create Order</h2>
             <p className="text-muted-foreground mt-1 text-sm">Select items to add to the customer's cart.</p>
@@ -341,8 +341,8 @@ Thank you for choosing us! We will notify you once your order is ready.`;
         </div>
 
         {/* Right Column: Order Summary & Customer Details */}
-        <div className="lg:col-span-5 xl:col-span-4 flex flex-col h-[calc(100vh-6rem)]">
-          <div className="bg-white rounded-3xl shadow-xl shadow-black/5 border border-border/50 overflow-hidden flex flex-col h-full">
+        <div className="lg:col-span-5 xl:col-span-4 flex flex-col">
+          <div className="bg-white rounded-3xl shadow-xl shadow-black/5 border border-border/50 overflow-hidden flex flex-col">
 
             <div className="p-6 bg-gradient-to-br from-primary/5 to-transparent border-b border-border/50">
               <h3 className="font-display font-bold text-xl flex items-center gap-2">
@@ -401,7 +401,7 @@ Thank you for choosing us! We will notify you once your order is ready.`;
               </div>
             </div>
 
-          <div className="flex-1 min-h-[300px] max-h-[500px] overflow-y-auto p-6 bg-secondary/10">
+          <div className="p-6 bg-secondary/10">
 
 <div className="bg-white border border-border rounded-2xl p-4 mb-4">
   <h4 className="font-semibold text-sm mb-3">Add Custom Item</h4>
@@ -518,7 +518,7 @@ Thank you for choosing us! We will notify you once your order is ready.`;
               )}
             </div>
 
-            <div className="p-6 bg-white border-t border-border mt-auto space-y-4">
+            <div className="p-6 bg-white border-t border-border space-y-4 sticky bottom-0 z-10 shadow-[0_-4px_10px_rgba(0,0,0,0.05)]">
               <input
                 type="text"
                 placeholder="Order notes (optional)"
