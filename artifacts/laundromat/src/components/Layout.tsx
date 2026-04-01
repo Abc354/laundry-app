@@ -2,6 +2,7 @@ import { ReactNode } from "react";
 import { Link, useLocation } from "wouter";
 import { Droplets, PlusCircle, ListOrdered } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { signOut } from "@/lib/auth";
 
 interface LayoutProps {
   children: ReactNode;
@@ -49,6 +50,16 @@ export function Layout({ children }: LayoutProps) {
             );
           })}
         </nav>
+        <div className="px-4 pb-4 mt-auto">
+  <button
+    onClick={async () => {
+      await signOut();
+    }}
+    className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-red-500 text-white font-medium hover:bg-red-600 transition-colors"
+  >
+    Logout
+  </button>
+</div>
       </aside>
 
       {/* Main Content */}
