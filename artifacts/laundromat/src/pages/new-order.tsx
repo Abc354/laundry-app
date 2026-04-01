@@ -406,13 +406,13 @@ Thank you for choosing us! We will notify you once your order is ready.`;
 <div className="bg-white border border-border rounded-2xl p-4 mb-4">
   <h4 className="font-semibold text-sm mb-3">Add Custom Item</h4>
 
-  <div className="flex gap-2">
+  <div className="flex gap-2 items-center">
     <input
       type="text"
       placeholder="Item name"
       value={customItemName}
       onChange={(e) => setCustomItemName(e.target.value)}
-      className="flex-1 px-3 py-2 border border-border rounded-lg text-sm"
+      className="flex-1 min-w-0 px-3 py-2 border border-border rounded-lg text-sm"
     />
 
     <input
@@ -421,7 +421,7 @@ Thank you for choosing us! We will notify you once your order is ready.`;
       value={customItemPrice}
       onChange={(e) => setCustomItemPrice(Number(e.target.value))}
       disabled={!customItemName}
-      className="w-24 px-3 py-2 border border-border rounded-lg text-sm disabled:opacity-50"
+      className="w-20 shrink-0 px-3 py-2 border border-border rounded-lg text-sm disabled:opacity-50"
     />
 
     <button
@@ -443,11 +443,13 @@ Thank you for choosing us! We will notify you once your order is ready.`;
         setCustomItemName("");
         setCustomItemPrice("");
       }}
-      className="px-3 py-2 bg-primary text-white rounded-lg text-sm"
+       className="shrink-0 px-3 py-2 bg-primary text-white rounded-lg text-sm"
     >
       Add
     </button>
   </div>
+
+  
 </div>
 
 
