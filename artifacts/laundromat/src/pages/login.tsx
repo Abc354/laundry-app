@@ -10,19 +10,30 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [isLogin, setIsLogin] = useState(true);
 
+  const [loading, setLoading] = useState(false);
   const handleSubmit = async () => {
-    if (!name || !password) {
-      alert("Please fill all fields");
-      return;
-    }
+  if (!name || !password) {
+    alert("Please fill all fields");
+    return;
+  }
 
+  if (loading) return; //  prevent multiple clicks
+  setLoading(true);
+
+  try {
     const { error } = isLogin
       ? await signIn(name, password)
       : await signUp(name, password);
 
-    if (!error) navigate("/");
-    else alert(error.message);
-  };
+    if (error) throw error;
+
+    navigate("/");
+  } catch (err: any) {
+    alert(err.message);
+  } finally {
+    setLoading(false); // ✅ always reset
+  }
+};
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-secondary/30 px-4">
@@ -57,11 +68,18 @@ export default function Login() {
           </div>
 
           <button
-            onClick={handleSubmit}
-            className="w-full py-3 bg-primary text-white rounded-xl font-semibold"
-          >
-            {isLogin ? "Login" : "Register"}
-          </button>
+  onClick={handleSubmit}
+  disabled={loading}
+  className="w-full py-3 bg-primary text-white rounded-xl disabled:opacity-50"
+>
+  {loading
+    ? isLogin
+      ? "Logging in..."
+      : "Registering..."
+    : isLogin
+    ? "Login"
+    : "Register"}
+</button>
 
           <p
             className="text-sm text-center text-muted-foreground cursor-pointer"
