@@ -276,9 +276,13 @@ Please visit us to collect your clothes. Thank you for choosing us!`;
                     <ul className="text-sm space-y-1 text-foreground/80 max-h-24 overflow-y-auto pr-2 custom-scrollbar">
                       {(order.items || []).map((item, idx) => (
                         <li key={idx} className="flex justify-between">
-                          <span className="truncate pr-4">{item.quantity}x {item.name}</span>
-                          <span className="font-medium">₹{item.totalPrice}</span>
-                        </li>
+  <span className="truncate pr-4">
+    {item.quantity}x {item.name}
+  </span>
+  <span className="font-medium">
+    ₹{(item.unitPrice || 0) * (item.quantity || 0)}
+  </span>
+</li>
                       ))}
                     </ul>
                   </div>
