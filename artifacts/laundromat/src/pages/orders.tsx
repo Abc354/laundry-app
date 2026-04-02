@@ -1,4 +1,5 @@
-import { useState, useMemo } from "react";
+//import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { format } from "date-fns";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -17,6 +18,8 @@ import { Layout } from "@/components/Layout";
 import { useOrders, useUpdateOrder, useDeleteOrder } from "@/hooks/use-orders";
 import { formatCurrency, cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/lib/supabase";
+//import { useEffect, useState } from "react";
 //import type { OrderStatus } from "../lib/api-client-react/src";
 
 export default function OrdersList() {
@@ -34,7 +37,29 @@ console.log("ERROR:", error);
   const [dateFrom, setDateFrom] = useState("");
   const [dateTo, setDateTo] = useState("");
   const [expandedPhotos, setExpandedPhotos] = useState<number | null>(null);
+  const [role, setRole] = useState<"admin" | "employee">("employee");
 const safeOrders = orders || [];
+
+useEffect(() => {
+  const getRole = async () => {
+    const { data: { user } } = await supabase.auth.getUser();
+
+    if (!user) return;
+
+    const { data } = await supabase
+      .from("profiles")
+      .select("role")
+      .eq("id", user.id)
+      .single();
+
+    if (data?.role) {
+      setRole(data.role);
+    }
+  };
+
+  getRole();
+}, []);
+
   const filteredOrders = useMemo(() => {
     console.log("INSIDE FILTER, orders:", orders);
     return safeOrders?.filter((order) => {
@@ -178,7 +203,11 @@ Please visit us to collect your clothes. Thank you for choosing us!`;
               <TrendingUp className="w-4 h-4 text-primary" />
               <div className="text-sm">
                 <span className="text-muted-foreground">{filteredOrders.length} orders · Total: </span>
-                <span className="font-display font-bold text-primary">{formatCurrency(totalRevenue)}</span>
+                {role === "admin" && (
+  <span className="font-display font-bold text-primary">
+    {formatCurrency(totalRevenue)}
+  </span>
+)}
               </div>
             </div>
           )}
