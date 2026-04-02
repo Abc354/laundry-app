@@ -2,7 +2,9 @@ import { supabase } from "@/lib/supabase";
 import { useState, useMemo, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Plus, Minus, Search, ShoppingBag, User, Phone, Calendar, Trash2, CheckCircle2, Tag, Camera, X, ImageIcon } from "lucide-react";
-import { CATALOG, CATEGORIES, type CatalogItem } from "@/lib/catalog";
+//import { CATALOG, CATEGORIES, type CatalogItem } from "@/lib/catalog";
+
+import { CATEGORIES } from "@/lib/catalog"; // keep only if needed
 import { formatCurrency, cn } from "@/lib/utils";
 
 import { useToast } from "@/hooks/use-toast";
@@ -40,8 +42,23 @@ export default function NewOrder() {
   const [customItemName, setCustomItemName] = useState("");
 const [customItemPrice, setCustomItemPrice] = useState<number | "">("");
 
+const [items, setItems] = useState<any[]>([]);
+useEffect(() => {
+  const fetchItems = async () => {
+    const { data, error } = await supabase
+      .from("items")
+      .select("*");
+
+    if (!error) {
+      setItems(data || []);
+    }
+  };
+
+  fetchItems();
+}, []);
+
   const filteredCatalog = useMemo(() => {
-    return CATALOG.filter(item => {
+  return items.filter(item => {
       const matchesSearch = item.name.toLowerCase().includes(searchQuery.toLowerCase());
       const matchesCategory = searchQuery ? true : item.category === activeCategory;
       return matchesSearch && matchesCategory;
