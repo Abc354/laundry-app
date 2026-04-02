@@ -61,4 +61,9 @@ export const CATALOG: CatalogItem[] = [
   { name: "Normal Bags", price: null, category: "Household & Others" },
 ];
 
-export const CATEGORIES = Array.from(new Set(CATALOG.map((i) => i.category)));
+//export const CATEGORIES = Array.from(new Set(CATALOG.map((i) => i.category)));
+export const CATEGORIES = [
+  { label: "Men Dry Cleaning", value: "Men" },
+  { label: "Women Dry Cleaning", value: "Women" },
+  { label: "Household & Others", value: "Household & Others" },
+];

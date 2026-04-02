@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Plus, Minus, Search, ShoppingBag, User, Phone, Calendar, Trash2, CheckCircle2, Tag, Camera, X, ImageIcon } from "lucide-react";
 //import { CATALOG, CATEGORIES, type CatalogItem } from "@/lib/catalog";
 
-import { CATEGORIES } from "@/lib/catalog"; // keep only if needed
+//import { CATEGORIES } from "@/lib/catalog"; // keep only if needed
 import { formatCurrency, cn } from "@/lib/utils";
 
 import { useToast } from "@/hooks/use-toast";
@@ -61,7 +61,7 @@ useEffect(() => {
   const filteredCatalog = useMemo(() => {
   return items.filter(item => {
       const matchesSearch = item.name.toLowerCase().includes(searchQuery.toLowerCase());
-      const matchesCategory = searchQuery ? true : item.category === activeCategory;
+      const matchesCategory = searchQuery ? true : item.category === activeCategory.value;
       return matchesSearch && matchesCategory;
     });
   }, [searchQuery, activeCategory]);
