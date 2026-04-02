@@ -160,7 +160,7 @@ Please visit us to collect your clothes. Thank you for choosing us!`;
               placeholder="Search Order No, Name or Phone..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full md:w-64 pl-10 pr-4 py-2.5 bg-white border border-border rounded-xl focus:outline-none focus:ring-4 focus:ring-primary/10 focus:border-primary transition-all shadow-sm"
+              className="w-full md:min-w-[300px] md:w-80 pl-10 pr-4 py-2.5 bg-white border border-border rounded-xl focus:outline-none focus:ring-4 focus:ring-primary/10 focus:border-primary transition-all shadow-sm"
             />
           </div>
         </div>
@@ -202,7 +202,10 @@ Please visit us to collect your clothes. Thank you for choosing us!`;
             <div className="flex items-center gap-2 ml-auto bg-primary/5 border border-primary/20 rounded-xl px-4 py-2">
               <TrendingUp className="w-4 h-4 text-primary" />
               <div className="text-sm">
-                <span className="text-muted-foreground">{filteredOrders.length} orders · Total: </span>
+                <span className="text-muted-foreground">
+  {filteredOrders.length} orders
+  {role === "admin" && " · Total:"}
+</span>
                 {role === "admin" && (
   <span className="font-display font-bold text-primary">
     {formatCurrency(totalRevenue)}
