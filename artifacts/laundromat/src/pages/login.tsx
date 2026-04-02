@@ -26,7 +26,10 @@ export default function Login() {
       : await signUp(name, password);
 
     if (error) throw error;
-
+if (!isLogin) {
+  const { error: loginError } = await signIn(name, password);
+  if (loginError) throw loginError;
+}
     navigate("/");
   } catch (err: any) {
     alert(err.message);
