@@ -1,4 +1,5 @@
 import { supabase } from "@/lib/supabase";
+import { useEffect } from "react";
 import { useState, useMemo, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Plus, Minus, Search, ShoppingBag, User, Phone, Calendar, Trash2, CheckCircle2, Tag, Camera, X, ImageIcon } from "lucide-react";
