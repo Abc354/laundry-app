@@ -25,7 +25,9 @@ export default function NewOrder() {
   
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const [activeCategory, setActiveCategory] = useState<string>(CATEGORIES[0]);
+  //const [activeCategory, setActiveCategory] = useState<string>(CATEGORIES[0]);
+  type Category = { label: string; value: string };
+const [activeCategory, setActiveCategory] = useState<Category>(CATEGORIES[0]);
   const [searchQuery, setSearchQuery] = useState("");
 
   const [customerName, setCustomerName] = useState("");
@@ -61,10 +63,10 @@ useEffect(() => {
   const filteredCatalog = useMemo(() => {
   return items.filter(item => {
       const matchesSearch = item.name.toLowerCase().includes(searchQuery.toLowerCase());
-      const matchesCategory = searchQuery ? true : item.category === activeCategory.value;
+      const matchesCategory = searchQuery ? true : item.category?.toLowerCase() === activeCategory.value?.toLowerCase();
       return matchesSearch && matchesCategory;
     });
-  }, [searchQuery, activeCategory]);
+  }, [searchQuery, activeCategory,items]);
 
   const subtotal = useMemo(() => {
     return cart.reduce((acc, item) => acc + (item.unitPrice * item.quantity), 0);
@@ -79,7 +81,7 @@ useEffect(() => {
     return Math.max(0, subtotal - discount);
   }, [subtotal, discount]);
 
-  const handleAddToCart = (item: CatalogItem) => {
+  const handleAddToCart = (item: any) => {
     setCart((prev) => {
       if (item.price !== null) {
         const existing = prev.find((c) => c.name === item.name && !c.isCustomPrice);
@@ -301,20 +303,20 @@ Thank you for choosing us! We will notify you once your order is ready.`;
 
           {!searchQuery && (
             <div className="flex overflow-x-auto gap-2 mb-6 pb-2 scrollbar-hide">
-              {CATEGORIES.map(cat => (
-                <button
-                  key={cat.value}
-                  onClick={() => setActiveCategory(cat)}
-                  className={cn(
-                    "px-5 py-2.5 rounded-full font-medium text-sm whitespace-nowrap transition-all duration-200",
-                    activeCategory.value === cat.value
-                      ? "bg-foreground text-background shadow-lg scale-105"
-                      : "bg-white border border-border text-muted-foreground hover:bg-secondary hover:border-border/80"
-                  )}
-                >
-                  {cat}
-                </button>
-              ))}
+            {CATEGORIES.map(cat => (
+  <button
+    key={cat.value}
+    onClick={() => setActiveCategory(cat)}
+    className={cn(
+      "px-5 py-2.5 rounded-full font-medium text-sm whitespace-nowrap transition-all duration-200",
+      activeCategory?.value === cat.value
+        ? "bg-foreground text-background shadow-lg scale-105"
+        : "bg-white border border-border text-muted-foreground hover:bg-secondary hover:border-border/80"
+    )}
+  >
+    {cat.label}
+  </button>
+))}
             </div>
           )}
 
