@@ -10,6 +10,7 @@ import OrdersList from "@/pages/orders";
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 import Login from "@/pages/login";
+import ManageItems from "@/pages/manage-items";
 
 // Query client setup with basic defaults
 const queryClient = new QueryClient({
@@ -26,8 +27,8 @@ function Router() {
     <Switch>
       <Route path="/" component={NewOrder} />
       <Route path="/orders" component={OrdersList} />
-      <Route component={NotFound} />
       <Route path="/manage-items" component={ManageItems} />
+      <Route component={NotFound} />
     </Switch>
   );
 }
