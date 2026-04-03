@@ -3,6 +3,8 @@ import { Link, useLocation } from "wouter";
 import { Droplets, PlusCircle, ListOrdered } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { signOut } from "@/lib/auth";
+import { useEffect, useState } from "react";
+import { supabase } from "@/lib/supabase";
 
 interface LayoutProps {
   children: ReactNode;
@@ -10,11 +12,34 @@ interface LayoutProps {
 
 export function Layout({ children }: LayoutProps) {
   const [location] = useLocation();
+  const [role, setRole] = useState("");
 
-  const navItems = [
-    { href: "/", label: "New Order", icon: PlusCircle },
-    { href: "/orders", label: "All Orders", icon: ListOrdered },
-  ];
+ const navItems = [
+  { href: "/", label: "New Order", icon: PlusCircle },
+  { href: "/orders", label: "All Orders", icon: ListOrdered },
+  ...(role === "admin"
+    ? [{ href: "/manage-items", label: "Manage Items", icon: ListOrdered }]
+    : []),
+];
+
+  useEffect(() => {
+  const getRole = async () => {
+    const { data } = await supabase.auth.getUser();
+    const userId = data.user?.id;
+
+    if (!userId) return;
+
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("role")
+      .eq("id", userId)
+      .single();
+
+    setRole(profile?.role || "");
+  };
+
+  getRole();
+}, []);
 
   return (
     <div className="min-h-screen bg-background flex flex-col md:flex-row">
@@ -59,7 +84,7 @@ export function Layout({ children }: LayoutProps) {
   >
     Logout
   </button>
-</div>
+</div>    
       </aside>
 
       {/* Main Content */}

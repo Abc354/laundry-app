@@ -27,6 +27,7 @@ function Router() {
       <Route path="/" component={NewOrder} />
       <Route path="/orders" component={OrdersList} />
       <Route component={NotFound} />
+      <Route path="/manage-items" component={ManageItems} />
     </Switch>
   );
 }
