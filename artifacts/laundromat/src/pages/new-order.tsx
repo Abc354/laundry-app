@@ -303,11 +303,11 @@ Thank you for choosing us! We will notify you once your order is ready.`;
             <div className="flex overflow-x-auto gap-2 mb-6 pb-2 scrollbar-hide">
               {CATEGORIES.map(cat => (
                 <button
-                  key={cat}
+                  key={cat.value}
                   onClick={() => setActiveCategory(cat)}
                   className={cn(
                     "px-5 py-2.5 rounded-full font-medium text-sm whitespace-nowrap transition-all duration-200",
-                    activeCategory === cat
+                    activeCategory.value === cat.value
                       ? "bg-foreground text-background shadow-lg scale-105"
                       : "bg-white border border-border text-muted-foreground hover:bg-secondary hover:border-border/80"
                   )}
