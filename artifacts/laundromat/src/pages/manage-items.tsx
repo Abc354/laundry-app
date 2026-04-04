@@ -120,23 +120,42 @@ export default function ManageItems() {
         <div className="space-y-3">
           {items.map((item) => (
             <div
-              key={item.id}
-              className="flex justify-between items-center bg-white p-3 rounded-xl"
-            >
+  key={item.id}
+  className="bg-white rounded-2xl border border-border p-4 shadow-sm hover:shadow-md transition-all flex justify-between items-center"
+>
               <div>
-                <p className="font-medium">{item.name}</p>
-                <p className="text-sm text-gray-500">{item.category}</p>
-              </div>
+  <h3 className="font-semibold text-foreground">{item.name}</h3>
+  <p className="text-xs text-muted-foreground mt-1">{item.category}</p>
+</div>
 
               <div className="flex items-center gap-2">
-                <input
-                  type="number"
-                  defaultValue={item.price || ""}
-                  onBlur={(e) =>
-                    updatePrice(item.id, Number(e.target.value))
-                  }
-                  className="border p-1 rounded w-20"
-                />
+                <div className="flex items-center gap-2">
+  <input
+    type="number"
+    value={item.price || ""}
+    onChange={(e) => {
+      const newItems = items.map((i) =>
+        i.id === item.id ? { ...i, price: e.target.value } : i
+      );
+      setItems(newItems);
+    }}
+    className="border p-2 rounded w-24"
+  />
+
+  <button
+    onClick={() => updatePrice(item.id, Number(item.price))}
+    className="bg-primary text-white px-3 py-1 rounded-lg text-sm hover:bg-primary/90"
+  >
+    Update
+  </button>
+
+  <button
+    onClick={() => deleteItem(item.id)}
+    className="text-red-500 text-sm"
+  >
+    Delete
+  </button>
+</div>
 
                 <button
                   onClick={() => deleteItem(item.id)}
