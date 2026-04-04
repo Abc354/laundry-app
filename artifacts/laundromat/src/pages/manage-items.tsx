@@ -16,7 +16,11 @@ export default function ManageItems() {
   // 🔹 Fetch items
   const fetchItems = async () => {
     setLoading(true);
-    const { data, error } = await supabase.from("items").select("*");
+    //const { data, error } = await supabase.from("items").select("*");
+    const { data, error } = await supabase
+  .from("items")
+  .select("*")
+  .order("id", { ascending: true });
 
     if (!error) setItems(data || []);
     setLoading(false);
