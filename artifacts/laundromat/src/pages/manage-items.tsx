@@ -78,31 +78,35 @@ export default function ManageItems() {
       <div className="bg-white p-4 rounded-xl mb-6">
         <h3 className="font-semibold mb-2">Add New Item</h3>
 
-        <div className="flex gap-2">
+       <div className="grid grid-cols-1 sm:grid-cols-4 gap-2">
           <input
-            placeholder="Name"
-            value={newName}
-            onChange={(e) => setNewName(e.target.value)}
-            className="border p-2 rounded"
-          />
+  placeholder="Name"
+  value={newName}
+  onChange={(e) => setNewName(e.target.value)}
+  className="border p-2 rounded w-full"
+/>
 
-          <input
-            placeholder="Price"
-            value={newPrice}
-            onChange={(e) => setNewPrice(e.target.value)}
-            className="border p-2 rounded w-24"
-          />
+         <input
+  placeholder="Price"
+  value={newPrice}
+  onChange={(e) => setNewPrice(e.target.value)}
+  className="border p-2 rounded w-full"
+/>
 
-          <input
-            placeholder="Category (Men/Women/Household)"
-            value={newCategory}
-            onChange={(e) => setNewCategory(e.target.value)}
-            className="border p-2 rounded"
-          />
+          <select
+  value={newCategory}
+  onChange={(e) => setNewCategory(e.target.value)}
+  className="border p-2 rounded w-full"
+>
+  <option value="">Select Category</option>
+  <option value="Men">Men</option>
+  <option value="Women">Women</option>
+  <option value="Household">Household</option>
+</select>
 
           <button
             onClick={addItem}
-            className="bg-primary text-white px-4 rounded"
+            className="bg-primary text-white px-4 rounded w-full"
           >
             Add
           </button>
