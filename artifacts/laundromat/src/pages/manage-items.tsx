@@ -20,7 +20,8 @@ export default function ManageItems() {
     const { data, error } = await supabase
   .from("items")
   .select("*")
-  .order("id", { ascending: true });
+  .order("category", { ascending: true })
+  .order("name", { ascending: true });
 
     if (!error) setItems(data || []);
     setLoading(false);
@@ -151,18 +152,13 @@ export default function ManageItems() {
 
   <button
     onClick={() => deleteItem(item.id)}
-    className="text-red-500 text-sm"
+    className="text-destructive hover:text-destructive/80 font-medium text-sm"
   >
     Delete
   </button>
 </div>
 
-                <button
-                  onClick={() => deleteItem(item.id)}
-                  className="text-red-500"
-                >
-                  Delete
-                </button>
+                
               </div>
             </div>
           ))}
