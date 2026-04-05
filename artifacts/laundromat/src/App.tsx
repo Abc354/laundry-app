@@ -13,7 +13,7 @@ import Login from "@/pages/login";
 import ManageItems from "@/pages/manage-items";
 
 
-import UpdatePassword from "@/pages/update-password";
+
 
 // Query client setup with basic defaults
 const queryClient = new QueryClient({
@@ -29,7 +29,7 @@ function Router() {
   return (
     <Switch>
       <Route path="/login" component={Login} />
-      <Route path="/update-password" component={UpdatePassword} />
+      
 
       <Route path="/" component={NewOrder} />
       <Route path="/orders" component={OrdersList} />
