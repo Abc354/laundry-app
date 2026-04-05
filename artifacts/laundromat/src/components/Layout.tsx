@@ -20,7 +20,10 @@ export function Layout({ children }: LayoutProps) {
   { href: "/", label: "New Order", icon: PlusCircle },
   { href: "/orders", label: "All Orders", icon: ListOrdered },
   ...(role === "admin"
-    ? [{ href: "/manage-items", label: "Manage Items", icon: ListOrdered }]
+    ? [
+        { href: "/manage-items", label: "Manage Items", icon: ListOrdered },
+        { href: "/manage-users", label: "Manage Users", icon: ListOrdered },
+      ]
     : []),
 ];
 

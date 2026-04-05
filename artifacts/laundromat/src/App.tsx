@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 import Login from "@/pages/login";
 import ManageItems from "@/pages/manage-items";
+import ManageUsers from "@/pages/manage-users";
 
 
 
@@ -34,6 +35,7 @@ function Router() {
       <Route path="/" component={NewOrder} />
       <Route path="/orders" component={OrdersList} />
       <Route path="/manage-items" component={ManageItems} />
+      <Route path="/manage-users" component={ManageUsers} />
 
       <Route component={NotFound} />
     </Switch>
