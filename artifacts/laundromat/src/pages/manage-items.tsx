@@ -66,10 +66,29 @@ export default function ManageItems() {
   };
 
   // 🔹 Delete item
-  const deleteItem = async (id: number) => {
-    await supabase.from("items").delete().eq("id", id);
-    fetchItems();
-  };
+ const deleteItem = async (id: string) => {
+  const { error } = await supabase
+    .from("items")
+    .delete()
+    .eq("id", id);
+
+  if (error) {
+    toast({
+      title: "Error",
+      description: "Failed to delete item",
+      variant: "destructive",
+    });
+    return;
+  }
+
+  toast({
+    title: "Deleted",
+    description: "Item deleted successfully",
+  });
+
+  // refresh list
+  fetchItems();
+};
 
   return (
     <Layout>
