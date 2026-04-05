@@ -152,7 +152,7 @@ export default function ManageItems() {
 
  <button
   onClick={() => deleteItem(item.id)}
-  className="bg-destructive text-white px-3 py-1 rounded-lg text-sm hover:bg-destructive/90"
+  className="bg-primary text-white px-3 py-1 rounded-lg text-sm hover:bg-primary/90"
 >
 Delete
 </button>
