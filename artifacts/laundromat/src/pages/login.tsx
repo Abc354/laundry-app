@@ -1,7 +1,6 @@
 import { useState } from "react";
-import { signIn, signUp } from "@/lib/auth";
+import { supabase } from "@/lib/supabase";
 import { useLocation } from "wouter";
-import { User, Lock } from "lucide-react";
 
 export default function Login() {
   const [, navigate] = useLocation();
@@ -9,88 +8,123 @@ export default function Login() {
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [isLogin, setIsLogin] = useState(true);
+  const [isForgot, setIsForgot] = useState(false);
 
-  const [loading, setLoading] = useState(false);
+  // 🔐 LOGIN / REGISTER
   const handleSubmit = async () => {
-  if (!name || !password) {
-    alert("Please fill all fields");
-    return;
-  }
+    if (!name || !password) {
+      alert("Please fill all fields");
+      return;
+    }
 
-  if (loading) return; //  prevent multiple clicks
-  setLoading(true);
+    const email = `${name.toLowerCase()}@laundry.app`;
 
-  try {
     const { error } = isLogin
-      ? await signIn(name, password)
-      : await signUp(name, password);
+      ? await supabase.auth.signInWithPassword({ email, password })
+      : await supabase.auth.signUp({ email, password });
 
-    if (error) throw error;
-if (!isLogin) {
-  const { error: loginError } = await signIn(name, password);
-  if (loginError) throw loginError;
-}
-    navigate("/");
-  } catch (err: any) {
-    alert(err.message);
-  } finally {
-    setLoading(false); // ✅ always reset
-  }
-};
+    if (error) {
+      alert(error.message);
+    } else {
+      navigate("/");
+    }
+  };
+
+  // 🔁 RESET PASSWORD
+  const handleResetPassword = async () => {
+    if (!name) {
+      alert("Enter your username");
+      return;
+    }
+
+    const email = `${name.toLowerCase()}@laundry.app`;
+
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+     redirectTo: "https://swlaundry.vercel.app/update-password",
+    });
+
+    if (error) {
+      alert(error.message);
+    } else {
+      alert("Password reset link sent");
+    }
+  };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-secondary/30 px-4">
-      <div className="bg-white w-full max-w-md rounded-3xl shadow-xl border border-border p-6">
-        <h2 className="text-2xl font-display font-bold text-center mb-6">
-          {isLogin ? "Employee Login" : "Register Employee"}
-        </h2>
+    <div className="flex items-center justify-center h-screen bg-background">
+      <div className="bg-white p-6 rounded-2xl shadow-lg w-80 space-y-4">
 
-        <div className="space-y-4">
-          {/* Name */}
-          <div className="relative">
-            <User className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+        {isForgot ? (
+          <>
+            <h2 className="text-xl font-bold text-center">Reset Password</h2>
+
             <input
               type="text"
-              placeholder="Employee Name"
+              placeholder="Enter username (e.g. purva)"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full pl-9 pr-4 py-2.5 border border-border rounded-xl focus:ring-4 focus:ring-primary/10"
+              className="w-full border p-2 rounded-xl"
             />
-          </div>
 
-          {/* Password */}
-          <div className="relative">
-            <Lock className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+            <button
+              onClick={handleResetPassword}
+              className="w-full bg-primary text-white py-2 rounded-xl"
+            >
+              Send Reset Link
+            </button>
+
+            <p
+              onClick={() => setIsForgot(false)}
+              className="text-sm text-primary text-center cursor-pointer"
+            >
+              Back to Login
+            </p>
+          </>
+        ) : (
+          <>
+            <h2 className="text-xl font-bold text-center">
+              {isLogin ? "Login" : "Register"}
+            </h2>
+
+            <input
+              type="text"
+              placeholder="Username"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              className="w-full border p-2 rounded-xl"
+            />
+
             <input
               type="password"
               placeholder="Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full pl-9 pr-4 py-2.5 border border-border rounded-xl focus:ring-4 focus:ring-primary/10"
+              className="w-full border p-2 rounded-xl"
             />
-          </div>
 
-          <button
-  onClick={handleSubmit}
-  disabled={loading}
-  className="w-full py-3 bg-primary text-white rounded-xl disabled:opacity-50"
->
-  {loading
-    ? isLogin
-      ? "Logging in..."
-      : "Registering..."
-    : isLogin
-    ? "Login"
-    : "Register"}
-</button>
+            <button
+              onClick={handleSubmit}
+              className="w-full bg-primary text-white py-2 rounded-xl"
+            >
+              {isLogin ? "Login" : "Register"}
+            </button>
 
-          <p
-            className="text-sm text-center text-muted-foreground cursor-pointer"
-            onClick={() => setIsLogin(!isLogin)}
-          >
-            {isLogin ? "New employee? Register" : "Already have account? Login"}
-          </p>
-        </div>
+            <p
+              onClick={() => setIsForgot(true)}
+              className="text-sm text-primary text-right cursor-pointer"
+            >
+              Forgot Password?
+            </p>
+
+            <p
+              onClick={() => setIsLogin(!isLogin)}
+              className="text-sm text-center text-muted-foreground cursor-pointer"
+            >
+              {isLogin ? "Create account" : "Already have account?"}
+            </p>
+          </>
+        )}
+
       </div>
     </div>
   );
