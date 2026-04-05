@@ -150,7 +150,7 @@ export default function ManageItems() {
     Update
   </button>
 
-  <<button
+  <button
   onClick={() => deleteItem(item.id)}
   className="px-4 py-2 rounded-xl bg-red-500 text-white font-medium shadow-sm hover:bg-red-600 transition-all"
 >
