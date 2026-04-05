@@ -154,7 +154,7 @@ export default function ManageItems() {
   onClick={() => deleteItem(item.id)}
   className="bg-destructive text-white px-3 py-1 rounded-lg text-sm hover:bg-destructive/90"
 >
-  Delete
+Delete
 </button>
 </div>
 
