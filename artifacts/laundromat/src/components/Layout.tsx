@@ -14,6 +14,8 @@ export function Layout({ children }: LayoutProps) {
   const [location] = useLocation();
   const [role, setRole] = useState("");
 
+  const [userName, setUserName] = useState("");
+
  const navItems = [
   { href: "/", label: "New Order", icon: PlusCircle },
   { href: "/orders", label: "All Orders", icon: ListOrdered },
@@ -22,8 +24,8 @@ export function Layout({ children }: LayoutProps) {
     : []),
 ];
 
-  useEffect(() => {
-  const getRole = async () => {
+ useEffect(() => {
+  const getUserData = async () => {
     const { data } = await supabase.auth.getUser();
     const userId = data.user?.id;
 
@@ -31,14 +33,17 @@ export function Layout({ children }: LayoutProps) {
 
     const { data: profile } = await supabase
       .from("profiles")
-      .select("role")
+      .select("role, name")
       .eq("id", userId)
       .single();
 
-    setRole(profile?.role || "");
+    if (profile) {
+      setRole(profile.role || "");
+      setUserName(profile.name || "");
+    }
   };
 
-  getRole();
+  getUserData();
 }, []);
 
   return (
@@ -75,7 +80,17 @@ export function Layout({ children }: LayoutProps) {
             );
           })}
         </nav>
-        <div className="px-4 pb-4 mt-auto">
+        <div className="px-4 pb-4 mt-auto space-y-3">
+
+  {/* Logged in user */}
+  <div className="bg-primary/10 border border-primary/20 rounded-xl px-4 py-3">
+    <p className="text-xs text-muted-foreground">Logged in as</p>
+    <p className="font-semibold text-primary">
+      {userName || "Loading..."}
+    </p>
+  </div>
+
+  {/* Logout */}
   <button
     onClick={async () => {
       await signOut();
@@ -84,7 +99,8 @@ export function Layout({ children }: LayoutProps) {
   >
     Logout
   </button>
-</div>    
+
+</div>   
       </aside>
 
       {/* Main Content */}
