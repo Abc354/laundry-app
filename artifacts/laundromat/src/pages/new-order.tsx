@@ -254,7 +254,6 @@ Estimated Ready Date: ${formattedDate}${photosLine}
 
 Thank you for choosing us! We will notify you once your order is ready.
 
------------------------------------------------------------------------
 
 नमस्ते ${customerName}
 
