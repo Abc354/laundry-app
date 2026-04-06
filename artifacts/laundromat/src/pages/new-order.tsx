@@ -252,7 +252,23 @@ ${itemsList}
 Total Amount: ₹${totalAmount}
 Estimated Ready Date: ${formattedDate}${photosLine}
 
-Thank you for choosing us! We will notify you once your order is ready.`;
+Thank you for choosing us! We will notify you once your order is ready.
+
+-----------------------------------------------------------------------
+
+नमस्ते ${customerName}
+
+आपका ऑर्डर SW Laundry & Dry Cleaners में सफलतापूर्वक दर्ज हो गया है।
+
+ऑर्डर नंबर: #${displayId}
+आइटम्स:
+${itemsList}
+
+कुल राशि: ₹${totalAmount}
+तैयार होने की तारीख: ${formattedDate}
+
+आपका ऑर्डर तैयार होने पर हम आपको सूचित करेंगे।
+धन्यवाद!`;
 
     window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`, "_blank");
     // Reset
