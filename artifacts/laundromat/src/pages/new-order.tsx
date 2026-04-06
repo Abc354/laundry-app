@@ -248,12 +248,12 @@ Your laundry order has been placed successfully at *SW Laundry & Dry Cleaners*.
 Order ID: #${displayId}
 Items:
 ${itemsList}
-
 Total Amount: ₹${totalAmount}
+
 Estimated Ready Date: ${formattedDate}${photosLine}
 
 Thank you for choosing us! We will notify you once your order is ready.
-__________________________________
+____________________________________
 
 नमस्ते ${customerName},
 
@@ -262,8 +262,8 @@ __________________________________
 ऑर्डर नंबर: #${displayId}
 आइटम्स:
 ${itemsList}
-
 कुल राशि: ₹${totalAmount}
+
 तैयार होने की तारीख: ${formattedDate}
 
 आपका ऑर्डर तैयार होने पर हम आपको सूचित करेंगे।
