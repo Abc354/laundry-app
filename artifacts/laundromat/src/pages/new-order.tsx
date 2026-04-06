@@ -253,8 +253,7 @@ Total Amount: ₹${totalAmount}
 Estimated Ready Date: ${formattedDate}${photosLine}
 
 Thank you for choosing us! We will notify you once your order is ready.
-
-______________________________________________________________________________
+__________________________________
 
 नमस्ते ${customerName},
 
