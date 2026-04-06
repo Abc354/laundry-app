@@ -119,7 +119,18 @@ Great news! Your laundry order (#${displayId}) at *SW Laundry & Dry Cleaners* is
 
 Total Amount: ₹${order.totalAmount}
 
-Please visit us to collect your clothes. Thank you for choosing us!`;
+Please visit us to collect your clothes. Thank you for choosing us!
+
+नमस्ते ${order.customerName},
+
+आपका ऑर्डर (#${displayId}) SW Laundry & Dry Cleaners में अब तैयार है।
+
+कृपया आकर अपने कपड़े ले जाएं।
+
+कुल राशि: ₹${order.totalAmount}
+
+धन्यवाद!`;
+
     const url = `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
     window.open(url, "_blank");
   };
@@ -397,7 +408,15 @@ Your laundry order (#${displayId}) has been successfully delivered.
 
 Total Amount: ₹${order.totalAmount}
 
-We hope to see you again soon!`;
+We hope to see you again soon!
+
+नमस्ते ${order.customerName},
+
+आपका ऑर्डर (#${displayId}) सफलतापूर्वक डिलीवर कर दिया गया है।
+
+हमें उम्मीद है आपको हमारी सेवा पसंद आई होगी।
+फिर से सेवा देने का मौका दें`;
+
                             window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`, "_blank");
                           }}
                           disabled={updateOrder.isPending}
