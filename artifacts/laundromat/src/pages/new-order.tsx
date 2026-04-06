@@ -173,7 +173,7 @@ useEffect(() => {
     // Upload images
     let imageUrls: string[] = [];
 
-    if (photos.length > 0) {
+   /* if (photos.length > 0) {
       setIsUploading(true);
 
       for (const file of photos) {
@@ -191,7 +191,7 @@ useEffect(() => {
 
         imageUrls.push(data.publicUrl);
       }
-    }
+    }*/
 
     // Insert into DB
     const { data, error } = await supabase
@@ -235,9 +235,11 @@ const formattedDate = estimatedReadyDate
     })
   : "Not specified";
 
-  const photosLine = imageUrls.length > 0
+  /*const photosLine = imageUrls.length > 0
   ? `\n Photos:\n${imageUrls.map((url, i) => `${i+1}. ${url}`).join("\n")}`
-  : "";
+  : ""; */
+
+  const photosLine = "";
 
     const msg = `Hello ${customerName},
 
@@ -563,6 +565,7 @@ Thank you for choosing us! We will notify you once your order is ready.`;
               </div>
 
               {/* Photo Upload */}
+              {/*
               <div>
                 <button
                   type="button"
@@ -599,7 +602,7 @@ Thank you for choosing us! We will notify you once your order is ready.`;
                   </div>
                 )}
               </div>
-
+*/}
               {/* Totals */}
               {discount > 0 ? (
                 <div className="space-y-1">
@@ -633,7 +636,7 @@ Thank you for choosing us! We will notify you once your order is ready.`;
                 className="w-full py-3.5 px-4 bg-gradient-to-r from-primary to-primary/80 hover:to-primary text-white rounded-xl font-bold text-lg shadow-lg shadow-primary/25 hover:shadow-primary/40 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center gap-2"
               >
                 {isSubmitting ? (
-                  <span className="animate-pulse">{photos.length>0 ? "Uploading Photos..." : "Processing..."}</span>
+                  <span className="animate-pulse">Processing...</span>
                 ) : (
                   <>
                     <CheckCircle2 className="w-5 h-5" /> Submit Order
