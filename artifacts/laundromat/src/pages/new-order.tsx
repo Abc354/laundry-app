@@ -254,10 +254,11 @@ Estimated Ready Date: ${formattedDate}${photosLine}
 
 Thank you for choosing us! We will notify you once your order is ready.
 
+______________________________________________________________________________
 
 नमस्ते ${customerName},
 
-आपका ऑर्डर SW Laundry & Dry Cleaners में सफलतापूर्वक दर्ज हो गया है।
+आपका ऑर्डर SW Laundry & Dry Cleaners में दर्ज हो गया है।
 
 ऑर्डर नंबर: #${displayId}
 आइटम्स:
