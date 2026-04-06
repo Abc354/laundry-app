@@ -121,7 +121,7 @@ export default function ManageItems() {
   <option value="">Select Category</option>
   <option value="Men">Men</option>
   <option value="Women">Women</option>
-  <option value="Household">Household</option>
+  <option value="Household & Others">Household & Others</option>
 </select>
 
           <button
