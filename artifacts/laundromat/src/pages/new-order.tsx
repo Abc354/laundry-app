@@ -248,6 +248,7 @@ Your laundry order has been placed successfully at *SW Laundry & Dry Cleaners*.
 Order ID: #${displayId}
 Items:
 ${itemsList}
+
 Total Amount: ₹${totalAmount}
 
 Estimated Ready Date: ${formattedDate}${photosLine}
@@ -262,6 +263,7 @@ ____________________________________
 ऑर्डर नंबर: #${displayId}
 आइटम्स:
 ${itemsList}
+
 कुल राशि: ₹${totalAmount}
 
 तैयार होने की तारीख: ${formattedDate}
