@@ -415,7 +415,7 @@ We hope to see you again soon!
 आपका ऑर्डर (#${displayId}) सफलतापूर्वक डिलीवर कर दिया गया है।
 
 हमें उम्मीद है आपको हमारी सेवा पसंद आई होगी।
-फिर से सेवा देने का मौका दें`;
+फिर से सेवा देने का मौका दें|`;
 
                             window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`, "_blank");
                           }}
