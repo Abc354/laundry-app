@@ -119,13 +119,12 @@ Great news! Your laundry order (#${displayId}) at *SW Laundry & Dry Cleaners* is
 
 Total Amount: ₹${order.totalAmount}
 
-Please visit us to collect your clothes. Thank you for choosing us!
+You can collect your clothes anytime between 10:30 AM and 8:00 PM. Thank you for choosing us!
+____________________________________
 
 नमस्ते ${order.customerName},
 
-आपका ऑर्डर (#${displayId}) SW Laundry & Dry Cleaners में अब तैयार है।
-
-कृपया आकर अपने कपड़े ले जाएं।
+आपका ऑर्डर (#${displayId}) अब तैयार है। आप सुबह 10:30 से रात 8 के बीच कभी भी आकर अपना ऑर्डर ले जा सकते हैं।
 
 कुल राशि: ₹${order.totalAmount}
 
@@ -409,13 +408,15 @@ Your laundry order (#${displayId}) has been successfully delivered.
 Total Amount: ₹${order.totalAmount}
 
 We hope to see you again soon!
+____________________________________
 
 नमस्ते ${order.customerName},
 
-आपका ऑर्डर (#${displayId}) सफलतापूर्वक डिलीवर कर दिया गया है।
+आपका ऑर्डर (#${displayId}) डिलीवर हो गया है।
 
-हमें उम्मीद है आपको हमारी सेवा पसंद आई होगी।
-फिर से सेवा देने का मौका दें|`;
+कुल राशि: ₹${order.totalAmount}
+
+हमारी सेवा चुनने के लिए आपका धन्यवाद!`;
 
                             window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`, "_blank");
                           }}
