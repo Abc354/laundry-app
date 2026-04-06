@@ -119,12 +119,12 @@ Great news! Your laundry order (#${displayId}) at *SW Laundry & Dry Cleaners* is
 
 Total Amount: ₹${order.totalAmount}
 
-You can collect your clothes anytime between 10:30 AM and 8:00 PM. Thank you for choosing us!
+You can collect your clothes between 10:30 AM to 8:00 PM. Thank you for choosing us!
 ____________________________________
 
 नमस्ते ${order.customerName},
 
-आपका ऑर्डर (#${displayId}) अब तैयार है। आप सुबह 10:30 से रात 8 के बीच कभी भी आकर अपना ऑर्डर ले जा सकते हैं।
+आपका ऑर्डर (#${displayId}) अब तैयार है। आप सुबह 10:30 बजे से रात 8 बजे तक कभी भी अपना ऑर्डर ले सकते हैं।
 
 कुल राशि: ₹${order.totalAmount}
 
