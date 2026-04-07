@@ -76,8 +76,8 @@ const matchesSearch =
       let matchesDate = true;
       if (dateFrom || dateTo) {
       //  const orderCreated = order.createdAt ? new Date(order.createdAt) : new Date().toISOString().split("T")[0];
-      const orderCreated = order.createdAt
-  ? new Date(order.createdAt).toLocaleDateString("en-CA")
+      const orderCreated = order.order_date
+  ? new Date(order.order_date).toLocaleDateString("en-CA")
   : "";
         if (dateFrom && orderCreated < dateFrom) matchesDate = false;
         if (dateTo && orderCreated > dateTo) matchesDate = false;
@@ -297,8 +297,8 @@ ____________________________________
                   <div className="flex justify-between items-center text-sm mb-2">
                     <span className="text-muted-foreground">Order Date</span>
                     <span className="font-medium text-foreground">
-                      {order.orderDate
-  ? format(new Date(order.orderDate), "MMM d, yyyy")
+                      {order.order_date
+  ? format(new Date(order.order_date), "MMM d, yyyy")
   : "-"}
                     </span>
                   </div>
