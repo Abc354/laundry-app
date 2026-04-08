@@ -55,7 +55,7 @@ const [resetPasswordValue, setResetPasswordValue] = useState("");
     return;
   }
 
-  const email = ${createName.toLowerCase().replace(/\s/g, "")}@laundry.app;
+  const email = '${createName.toLowerCase().replace(/\s/g, "")}@laundry.app';
 
   try {
     // 1. Create auth user
