@@ -9,8 +9,13 @@ export default function ManageUsers() {
   const [, navigate] = useLocation();
   const { toast } = useToast();
 
-  const [name, setName] = useState("");
-  const [password, setPassword] = useState("");
+  // Create Employee
+const [createName, setCreateName] = useState("");
+const [createPassword, setCreatePassword] = useState("");
+
+// Reset Password
+const [resetName, setResetName] = useState("");
+const [resetPasswordValue, setResetPasswordValue] = useState("");
 
   // 🔐 ADMIN PROTECTION
   useEffect(() => {
@@ -40,7 +45,7 @@ export default function ManageUsers() {
 
   // 🟢 CREATE EMPLOYEE
   const createEmployee = async () => {
-    if (!name || !password) {
+    if (!createName || !createPassword) {
       toast({
         title: "Missing fields",
         description: "Enter name and password",
@@ -49,13 +54,13 @@ export default function ManageUsers() {
       return;
     }
 
-    const email = '${name.toLowerCase()}@laundry.app';
+    const email = '${createName.toLowerCase()}@laundry.app';
 
     try {
       // 1. Create auth user
       const { data, error } = await supabase.auth.signUp({
         email,
-        password,
+        password: createPassword,
       });
 
       if (error) throw error;
@@ -91,8 +96,8 @@ export default function ManageUsers() {
         description: "Employee created successfully",
       });
 
-      setName("");
-      setPassword("");
+      setCreateName("");
+      setCreatePassword("");
     } catch (err: any) {
       toast({
         title: "Error",
@@ -104,7 +109,7 @@ export default function ManageUsers() {
 
   // 🔁 RESET PASSWORD
   const handleReset = async () => {
-    if (!name || !password) {
+    if (!resetName || !resetPasswordValue) {
       toast({
         title: "Missing fields",
         description: "Enter name and password",
@@ -114,15 +119,15 @@ export default function ManageUsers() {
     }
 
     try {
-      await resetPassword(name, password);
+      await resetPassword(resetName, resetPasswordValue);
 
       toast({
         title: "Success",
         description: "Password updated successfully",
       });
 
-      setName("");
-      setPassword("");
+      setResetName("");
+      setResetPasswordValue("");
     } catch (err: any) {
       toast({
         title: "Error",
@@ -142,16 +147,16 @@ export default function ManageUsers() {
 
           <input
             placeholder="Employee name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
+            value={createName}
+            onChange={(e) => setCreateName(e.target.value)}
             className="w-full border p-2 rounded-xl mb-3"
           />
 
           <input
             type="password"
             placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            value={createPassword}
+            onChange={(e) => setCreatePassword(e.target.value)}
             className="w-full border p-2 rounded-xl mb-4"
           />
 
@@ -169,16 +174,16 @@ export default function ManageUsers() {
 
           <input
             placeholder="Employee name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
+            value={resetName}
+            onChange={(e) => setResetName(e.target.value)}
             className="w-full border p-2 rounded-xl mb-3"
           />
 
           <input
             type="password"
             placeholder="New password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            value={resetPasswordValue}
+            onChange={(e) => setResetPasswordValue(e.target.value)}
             className="w-full border p-2 rounded-xl mb-4"
           />
 
