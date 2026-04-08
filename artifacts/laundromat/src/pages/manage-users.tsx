@@ -22,7 +22,7 @@ const [resetPasswordValue, setResetPasswordValue] = useState("");
     const checkAdmin = async () => {
       const { data } = await supabase.auth.getUser();
       const userId = data.user?.id;
-if (!userId) throw new Error("User creation failed");
+
 
       if (!userId) {
         navigate("/login");
@@ -55,19 +55,20 @@ if (!userId) throw new Error("User creation failed");
       return;
     }
 
-    const email = `${createName.toLowerCase().replace(/\s/g, "")}@laundry.app`;
+   // const email = `${createName.toLowerCase().replace(/\s/g, "")}@laundry.app`;
 
     try {
       // 1. Create auth user
-      const { data, error } = await supabase.auth.signUp({
-        email,
-        password: createPassword,
-      });
+    //  const { data, error } = await supabase.auth.signUp({
+    //    email,
+      //  password: createPassword,
+    //  });
 
-      if (error) throw error;
+      //if (error) throw error;
 
-      const userId = data.user?.id;
-if (!userId) throw new Error("User creation failed");
+    //  const userId = data.user?.id;
+    const userId = crypto.randomUUID();
+//if (!userId) throw new Error("User creation failed");
 
       // 2. Insert into profiles
       const { error: profileError } = await supabase
