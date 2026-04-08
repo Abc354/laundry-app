@@ -22,6 +22,7 @@ const [resetPasswordValue, setResetPasswordValue] = useState("");
     const checkAdmin = async () => {
       const { data } = await supabase.auth.getUser();
       const userId = data.user?.id;
+if (!userId) throw new Error("User creation failed");
 
       if (!userId) {
         navigate("/login");
@@ -66,6 +67,7 @@ const [resetPasswordValue, setResetPasswordValue] = useState("");
       if (error) throw error;
 
       const userId = data.user?.id;
+if (!userId) throw new Error("User creation failed");
 
       // 2. Insert into profiles
       const { error: profileError } = await supabase
@@ -82,7 +84,7 @@ const [resetPasswordValue, setResetPasswordValue] = useState("");
       // 3. Insert into employees table
       const { error: empError } = await supabase
         .from("employees")
-        .insert([
+        .upsert([
           {
             id: userId,
             name: createName,
