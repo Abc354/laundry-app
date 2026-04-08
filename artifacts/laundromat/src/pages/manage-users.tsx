@@ -45,70 +45,64 @@ const [resetPasswordValue, setResetPasswordValue] = useState("");
   }, []);
 
   // 🟢 CREATE EMPLOYEE
-  const createEmployee = async () => {
-    if (!createName || !createPassword) {
-      toast({
-        title: "Missing fields",
-        description: "Enter name and password",
-        variant: "destructive",
-      });
-      return;
-    }
+ const createEmployee = async () => {
+  if (!createName || !createPassword) {
+    toast({
+      title: "Missing fields",
+      description: "Enter name and password",
+      variant: "destructive",
+    });
+    return;
+  }
 
-   // const email = `${createName.toLowerCase().replace(/\s/g, "")}@laundry.app`;
+  const email = ${createName.toLowerCase().replace(/\s/g, "")}@laundry.app;
 
-    try {
-      // 1. Create auth user
-    //  const { data, error } = await supabase.auth.signUp({
-    //    email,
-      //  password: createPassword,
-    //  });
+  try {
+    // 1. Create auth user
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password: createPassword,
+    });
 
-      //if (error) throw error;
+    if (error) throw error;
 
-    //  const userId = data.user?.id;
-    const userId = crypto.randomUUID();
-//if (!userId) throw new Error("User creation failed");
+    const userId = data.user?.id;
 
-      // 2. Insert into profiles
-      const { error: profileError } = await supabase
-        .from("profiles")
-        .upsert([
-          {
-            id: userId,
-            role: "employee",
-          },
-        ]);
+    if (!userId) throw new Error("User creation failed");
 
-      if (profileError) throw profileError;
+    // 2. Insert into profiles
+    const { error: profileError } = await supabase
+      .from("profiles")
+      .upsert([
+        {
+          id: userId,
+          role: "employee",
+        },
+      ]);
 
-      // 3. Insert into employees table
-      const { error: empError } = await supabase
-        .from("employees")
-        .upsert([
-          {
-            id: userId,
-            name: createName,
-          },
-        ]);
+    if (profileError) throw profileError;
 
-      if (empError) throw empError;
+    // 3. Insert into employees ✅
+    const { error: employeeError } = await supabase
+      .from("employees")
+      .insert([
+        {
+          id: userId,
+          name: createName,
+        },
+      ]);
 
-      toast({
-        title: "Success",
-        description: "Employee created successfully",
-      });
+    if (employeeError) throw employeeError;
 
-      setCreateName("");
-      setCreatePassword("");
-    } catch (err: any) {
-      toast({
-        title: "Error",
-        description: err.message,
-        variant: "destructive",
-      });
-    }
-  };
+    toast({
+      title: "Success",
+      description: "Employee created",
+    });
+
+  } catch (err) {
+    console.error(err);
+  }
+};
 
   // 🔁 RESET PASSWORD
   const handleReset = async () => {
