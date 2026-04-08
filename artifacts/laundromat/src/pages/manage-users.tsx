@@ -72,7 +72,7 @@ if (!userId) throw new Error("User creation failed");
       // 2. Insert into profiles
       const { error: profileError } = await supabase
         .from("profiles")
-        .insert([
+        .upsert([
           {
             id: userId,
             role: "employee",
