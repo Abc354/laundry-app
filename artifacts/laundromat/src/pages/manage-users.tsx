@@ -49,7 +49,7 @@ export default function ManageUsers() {
       return;
     }
 
-    const email = ${name.toLowerCase()}@laundry.app;
+    const email = '${name.toLowerCase()}@laundry.app';
 
     try {
       // 1. Create auth user
