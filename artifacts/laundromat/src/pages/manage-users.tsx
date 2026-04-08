@@ -141,7 +141,7 @@ export default function ManageUsers() {
           <h2 className="text-xl font-bold mb-4">Create Employee</h2>
 
           <input
-            placeholder="Employee name (e.g. purva)"
+            placeholder="Employee name"
             value={name}
             onChange={(e) => setName(e.target.value)}
             className="w-full border p-2 rounded-xl mb-3"
