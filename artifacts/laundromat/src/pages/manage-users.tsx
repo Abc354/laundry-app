@@ -55,12 +55,23 @@ const [resetPasswordValue, setResetPasswordValue] = useState("");
     return;
   }
 
-  const email = '${createName.toLowerCase().replace(/\s/g, "")}@laundry.app';
+  //const email = '${createName.toLowerCase().replace(/\s/g, "")}@laundry.app';
+
+  const cleanedName = createName
+  .trim()
+  .toLowerCase()
+  .replace(/[^a-z0-9]/g, "");
+
+if (!cleanedName) {
+  throw new Error("Invalid employee name");
+}
+
+const email = ${cleanedName}@laundry.app;
 
   try {
     // 1. Create auth user
     const { data, error } = await supabase.auth.signUp({
-      email,
+      email:email,
       password: createPassword,
     });
 
