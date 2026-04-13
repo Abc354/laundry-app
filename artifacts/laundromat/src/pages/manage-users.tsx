@@ -66,7 +66,7 @@ if (!cleanedName) {
   throw new Error("Invalid employee name");
 }
 
-const email = ${cleanedName}@laundry.app;
+const email = '${cleanedName}@laundry.app';
 
   try {
     // 1. Create auth user
